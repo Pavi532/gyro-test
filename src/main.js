@@ -11,16 +11,12 @@ const paraY = document.getElementById('y')
 const paraZ = document.getElementById('z')
 const btnPermission = document.getElementById('btnPermission')
 
-btnPermission.addEventListener("click", (e) => {
-  e.preventDefault()
-  // if (typeof window.DeviceMotionEvent.requestPermission !== "function") {
-  //   // The feature is not available, or does not need permission.
-  //   gyroDiv.innerHTML = "Not Supported"
-  //   return;
-  // }
+btnPermission.addEventListener("click", () => {
+  // e.preventDefault()
+  if ( DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission();
+  }
 
-  DeviceMotionEvent.requestPermission();
-  alert("granted");
   window.addEventListener("devicemotion", (event) => {
     console.log(`${event.acceleration.x} m/s2`);
     console.log(`${event.acceleration.y} m/s2`);
