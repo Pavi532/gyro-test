@@ -9,12 +9,70 @@
   <body>
     <div id="app">
       <button id="btnPermission">permission</button>
-      <div id="gyrodiv">
-        <p id="x"></p>
-        <p id="y"></p>
-        <p id="z"></p>
-      </h1>
-    </div>
-    <script type="module" src="/src/main.js"></script>
+      <div class="card">
+        <table>
+          <tr>
+            <td>acceleration_x:</td>
+            <td id="acceleration_x"></td>
+          </tr>
+          <tr>
+            <td>acceleration_y:</td>
+            <td id="acceleration_y"></td>
+          </tr>
+          <tr>
+            <td>acceleration_z:</td>
+            <td id="acceleration_z"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <tr>
+            <td>acceleration_gravity_x:</td>
+            <td id="acceleration_gravity_x"></td>
+          </tr>
+          <tr>
+            <td>acceleration_gravity_y:</td>
+            <td id="acceleration_gravity_y"></td>
+          </tr>
+          <tr>
+            <td>acceleration_gravity_z:</td>
+            <td id="acceleration_gravity_z"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <tr>
+            <td>gyro_x (beta):</td>
+            <td id="gyro_x"></td>
+          </tr>
+          <tr>
+            <td>gyro_y (gamma):</td>
+            <td id="gyro_y"></td>
+          </tr>
+          <tr>
+            <td>gyro_z (alpha):</td>
+            <td id="gyro_z"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <tr>
+            <td>orientation_x (beta):</td>
+            <td id="orientation_x"></td>
+          </tr>
+          <tr>
+            <td>orientation_y (gamma):</td>
+            <td id="orientation_y"></td>
+          </tr>
+          <tr>
+            <td>orientation_z (alpha):</td>
+            <td id="orientation_z"></td>
+          </tr>
+        </table>
+      </div>
+      <script type="module" src="/src/main.js"></script>
   </body>
 </html>

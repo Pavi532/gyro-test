@@ -1,30 +1,39 @@
 import './style.css'
-import javascriptLogo from './assets/javascript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.js'
 
-
-const gyroDiv = document.getElementById('gyrodiv');
-const paraX = document.getElementById('x')
-const paraY = document.getElementById('y')
-const paraZ = document.getElementById('z')
 const btnPermission = document.getElementById('btnPermission')
 
-btnPermission.addEventListener("click", () => {
-  // e.preventDefault()
+btnPermission.addEventListener("click", async() => {
+
   if ( DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function") {
-    DeviceMotionEvent.requestPermission();
+    await DeviceMotionEvent.requestPermission();
   }
 
-  window.addEventListener("devicemotion", (event) => {
-    console.log(`${event.acceleration.x} m/s2`);
-    console.log(`${event.acceleration.y} m/s2`);
-    console.log(`${event.acceleration.z} m/s2`);
-  
-   paraX.innerText = `${event.acceleration.x} m/s2`;
-   paraY.innerText = `${event.acceleration.y} m/s2`;
-   paraZ.innerText = `${event.acceleration.z} m/s2`;
-    
-  });
+  window.addEventListener("devicemotion", handleDeviceMotion);
+  window.addEventListener("deviceorientation", handleDeviceOrientation);
 });
+
+function updateField(elem, value) {
+  if(value !== null){
+    document.getElementById(elem).innerText = value.toFixed(15)
+  }
+}
+
+function handleDeviceMotion(event) {
+  updateField('acceleration_x', event.acceleration.x);
+  updateField('acceleration_y', event.acceleration.y);
+  updateField('acceleration_z', event.acceleration.z);
+  
+  updateField('acceleration_gravity_x', event.accelerationIncludingGravity.x);
+  updateField('acceleration_gravity_y', event.accelerationIncludingGravity.y);
+  updateField('acceleration_gravity_z', event.accelerationIncludingGravity.z);
+
+  updateField('gyro_x', event.rotationRate.beta);
+  updateField('gyro_y', event.rotationRate.gamma);
+  updateField('gyro_z', event.rotationRate.alpha);
+}
+
+function handleDeviceOrientation(event) {
+  updateField('orientation_x', event.beta);
+  updateField('orientation_y', event.gamma);
+  updateField('orientation_z', event.alpha);
+}
