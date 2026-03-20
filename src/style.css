@@ -39,7 +39,7 @@ body{
 }
 
 #gyrodiv{
-  height: 200px;
+  height: 100%;
   width: 300px;
   background-color: aliceblue;
   color: red;
