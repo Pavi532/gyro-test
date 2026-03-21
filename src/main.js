@@ -56,6 +56,15 @@ function updateAcceleration(event) {
     const value = acceleration[axis];
     if (value !== null) {
       document.getElementById(`acceleration_${axis}`).innerText = value.toFixed(3);
+      const parentTR = document.getElementById(`tr_acceleration_${axis}`);
+      toggleClasses(value, parentTR)
+      if (axis === 'x') {
+        const card = document.getElementById(`card_acceleration`);
+        // card.classList.remove('pos', 'neg')
+        const absoluteValue = Math.abs(Math.trunc(value));
+        if(absoluteValue < 2) return
+        toggleClasses(value, card);
+      }
     }
   });
 }
@@ -82,4 +91,15 @@ function updateRotationRate(event) {
       document.getElementById(`gyro_${axis}`).innerText = value.toFixed(3);
     }
   });
+}
+
+function toggleClasses(value, elem) {
+  elem.classList.remove('pos', 'neg')
+  if (value > 0) {
+    elem.classList.add('pos');
+  } else if (value < 0) {
+    elem.classList.add('neg')
+  } else {
+    elem.classList.remove('pos', 'neg')
+  }
 }

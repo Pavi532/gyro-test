@@ -65,6 +65,16 @@ td{
   border-collapse: fixed;
 }
 
+.pos,
+.pos td{
+  background-color: red;
+}
+
+.neg,
+.neg td{
+  background-color: blue;
+}
+
 table tr td:first-child{
   width: 50px;
   font-style: italic;
