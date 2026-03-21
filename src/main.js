@@ -8,17 +8,20 @@ btnPermission.addEventListener("click", async() => {
     await DeviceMotionEvent.requestPermission();
   }
 
-  window.addEventListener("devicemotion", handleDeviceMotion);
-  window.addEventListener("deviceorientation", handleDeviceOrientation);
+  window.addEventListener("devicemotion", (e) => {
+    requestAnimationFrame(() => handleDeviceMotion(e));
+  }, false);
+  // window.addEventListener("deviceorientation", handleDeviceOrientation);
 });
 
 function updateField(elem, value) {
   if(value !== null){
-    document.getElementById(elem).innerText = value.toFixed(15)
+    document.getElementById(elem).innerText = value.toFixed(3)
   }
 }
 
 function handleDeviceMotion(event) {
+  
   updateField('acceleration_x', event.acceleration.x);
   updateField('acceleration_y', event.acceleration.y);
   updateField('acceleration_z', event.acceleration.z);
