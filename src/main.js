@@ -1,42 +1,85 @@
 import './style.css'
 
+let isTicking = false;
+
 const btnPermission = document.getElementById('btnPermission')
 
-btnPermission.addEventListener("click", async() => {
+btnPermission.addEventListener("click", checkPermissionAndListenToSensors);
 
-  if ( DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function") {
-    await DeviceMotionEvent.requestPermission();
+async function checkPermissionAndListenToSensors() {
+  if (DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function") {
+    try {
+      const permission = await DeviceMotionEvent.requestPermission();
+      if (permission === 'granted') {
+        window.addEventListener("devicemotion", handleDeviceMotion);
+      } else{
+        alert("permission was not granted");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    // For non iOS devices and browsers that do not require permission
+    window.addEventListener("devicemotion", handleDeviceMotion);
+    // window.addEventListener("deviceorientation", handleDeviceOrientation);
   }
 
-  window.addEventListener("devicemotion", (e) => {
-    requestAnimationFrame(() => handleDeviceMotion(e));
-  }, false);
-  // window.addEventListener("deviceorientation", handleDeviceOrientation);
-});
+}
 
-function updateField(elem, value) {
-  if(value !== null){
-    document.getElementById(elem).innerText = value.toFixed(3)
-  }
+function updateField(event) {
+  console.log(event);
+  updateAcceleration(event);
+  updateAccelerationIncludingGravity(event);
+  updateRotationRate(event);
+  isTicking = false;
 }
 
 function handleDeviceMotion(event) {
-  
-  updateField('acceleration_x', event.acceleration.x);
-  updateField('acceleration_y', event.acceleration.y);
-  updateField('acceleration_z', event.acceleration.z);
-  
-  updateField('acceleration_gravity_x', event.accelerationIncludingGravity.x);
-  updateField('acceleration_gravity_y', event.accelerationIncludingGravity.y);
-  updateField('acceleration_gravity_z', event.accelerationIncludingGravity.z);
-
-  updateField('gyro_x', event.rotationRate.beta);
-  updateField('gyro_y', event.rotationRate.gamma);
-  updateField('gyro_z', event.rotationRate.alpha);
+  if(!isTicking){
+    requestAnimationFrame(() => {updateField(event)});
+    isTicking = true
+  }
 }
 
+
 function handleDeviceOrientation(event) {
-  updateField('orientation_x', event.beta);
-  updateField('orientation_y', event.gamma);
-  updateField('orientation_z', event.alpha);
+  // updateField('orientation_x', event.beta);
+  // updateField('orientation_y', event.gamma);
+  // updateField('orientation_z', event.alpha);
+}
+
+function updateAcceleration(event) {
+  const { acceleration } = event;
+  if (!acceleration) return;
+
+  ['x', 'y', 'z'].forEach(axis => {
+    const value = acceleration[axis];
+    if (value !== null) {
+      document.getElementById(`acceleration_${axis}`).innerText = value.toFixed(3);
+    }
+  });
+}
+
+function updateAccelerationIncludingGravity(event) {
+  const { accelerationIncludingGravity } = event;
+  if (!accelerationIncludingGravity) return;
+
+  ['x', 'y', 'z'].forEach(axis => {
+    const value = accelerationIncludingGravity[axis];
+    if (value !== null) {
+      document.getElementById(`acceleration_gravity_${axis}`).innerText = value.toFixed(3);
+    }
+  });
+}
+
+function updateRotationRate(event) {
+  const { rotationRate } = event;
+  if (!rotationRate) return;
+
+  ['alpha', 'beta', 'gamma'].forEach(axis => {
+    const value = rotationRate[axis];
+    if (value !== null) {
+      document.getElementById(`gyro_${axis}`).innerText = value.toFixed(3);
+    }
+  });
 }
